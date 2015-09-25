@@ -28,6 +28,10 @@ public class TestPaintComponent extends JFrame {
 
 class TestPaintComponentPanel extends JPanel {
 	protected void paintComponent(Graphics  g) {
+		/*
+		 *需要先调用原方法
+		 *为绘制做准备
+		 **/
 		super.paintComponent(g);
 		/*
 		 *先将g的原参数存储起来

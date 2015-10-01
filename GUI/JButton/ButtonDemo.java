@@ -1,48 +1,72 @@
 /**
- * @(#)TestMessagePanel.java
+ * @(#)ButtonDemo.java
  *
  *
  * @author Proverbs
- * @version 1.00 2015/9/28
- * 测试字体，学习事件后可以改进为自定义调整字体
+ * @version 1.00 2015/10/1
+ * 设置Button控制移动的Message
  */
 
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 
-public class TestMessagePanel extends JFrame {
+public class ButtonDemo extends JFrame {
 
-    public TestMessagePanel() {
-    	MessagePanel mp1 = new MessagePanel("Welcome to java");
-    	MessagePanel mp2 = new MessagePanel("Java is fun");
-    	MessagePanel mp3 = new MessagePanel("java is cool");
-    	MessagePanel mp4 = new MessagePanel("I love java");
+	protected MessagePanel messagePanel = new MessagePanel("Welcome to Java");
+	private JButton jbtLeft = new JButton("Left");
+	private JButton jbtMid = new JButton("Mid");
+	private JButton jbtRight = new JButton("Right");
+	
+    public ButtonDemo() {
+    	messagePanel.setBackground(Color.WHITE);
+    	JPanel p = new JPanel();
+    	p.add(jbtLeft);
+    	p.add(jbtMid);
+    	p.add(jbtRight);
+    	/*
+    	 *设置alt+VK键控制Button点击
+    	 **/
+    	jbtLeft.setMnemonic(KeyEvent.VK_L);
+    	jbtMid.setMnemonic(KeyEvent.VK_M);
+    	jbtRight.setMnemonic(KeyEvent.VK_R);
+    	/*
+    	 *设置鼠标悬停提示
+    	 **/
+    	jbtLeft.setToolTipText("Move Message To Left");
+    	jbtMid.setToolTipText("Center Message");
+    	jbtRight.setToolTipText("Move Message To Right");
     	
-    	GraphicsEnvironment e = GraphicsEnvironment.getLocalGraphicsEnvironment();
-    	String[] fontnames = e.getAvailableFontFamilyNames();
+    	setLayout(new BorderLayout());
+    	add(messagePanel, BorderLayout.CENTER);
+    	add(p, BorderLayout.SOUTH);
     	
-    	mp1.setFont(new Font(fontnames[5], Font.ITALIC, 20));
-    	mp2.setFont(new Font(fontnames[2], Font.BOLD, 20));
-    	mp3.setFont(new Font(fontnames[3], Font.PLAIN, 20));
-    	mp3.setFont(new Font(fontnames[4], Font.ITALIC + Font.BOLD, 20));
+    	jbtLeft.addActionListener(new ActionListener() {
+    		public void actionPerformed(ActionEvent e) {
+    			messagePanel.moveLeft();
+    		}
+    	}
+    	);
     	
-    	mp1.setBackground(Color.RED);
-    	mp2.setBackground(Color.CYAN);
-    	mp3.setBackground(Color.GREEN);
-    	mp4.setBackground(Color.WHITE);
+    	jbtMid.addActionListener(new ActionListener() {
+    		public void actionPerformed(ActionEvent e) {
+    			messagePanel.setCentered(true);
+    		}
+    	}
+    	);
     	
-    	setLayout(new GridLayout(2, 2, 5, 5));
-    	
-    	add(mp1);
-    	add(mp2);
-    	add(mp3);
-    	add(mp4);
+    	jbtRight.addActionListener(new ActionListener() {
+    		public void actionPerformed(ActionEvent e) {
+    			messagePanel.moveRight();
+    		}
+    	}
+    	);
     }
     
     public static void main(String[] args) {
-    	TestMessagePanel frame = new TestMessagePanel();
-    	frame.setTitle("Test Message Panel");
-    	frame.setSize(300, 200);
+    	JFrame frame = new ButtonDemo();
+    	frame.setTitle("A Button Demo");
+    	frame.setSize(250, 100);
     	frame.setLocationRelativeTo(null);
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	frame.setVisible(true);
@@ -53,7 +77,7 @@ class MessagePanel extends JPanel {
 	private String message = "Welcome to Java";
 	private int xCoordinate = 20;
 	private int yCoordinate = 20;
-	private boolean centered = true;
+	private boolean centered = false;
 	private int interval = 10;
 	
 	public MessagePanel(String s) {
@@ -119,21 +143,25 @@ class MessagePanel extends JPanel {
 	}
 	
 	public void moveLeft() {
+		centered = false;
 		xCoordinate -= interval;
 		repaint();
 	}
 	
 	public void moveRight() {
+		centered = false;
 		xCoordinate += interval;
 		repaint();
 	}
 	
 	public void moveUp() {
+		centered = false;
 		yCoordinate -= interval;
 		repaint();
 	}
 	
 	public void moveDown() {
+		centered = false;
 		yCoordinate += interval;
 		repaint();
 	}

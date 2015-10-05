@@ -1,17 +1,63 @@
 /**
- * @(#)RadioButtonDemo.java
+ * @(#)JTextFieldDemo.java
  *
  *
  * @author Proverbs
  * @version 1.00 2015/10/4
- * 测试JRadioButton，单选按钮
+ * 继承了JRadioButtonDemo类，测试JTextField
  */
 
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class RadioButtonDemo extends JFrame {
+public class JTextFieldDemo extends RadioButtonDemo {
+
+	private JTextField textField = new JTextField(10);
+	
+    public JTextFieldDemo() {
+    	JPanel pText = new JPanel();
+    	pText.setLayout(new BorderLayout(5, 0));
+    	pText.add(new JLabel("Enter a new message"), BorderLayout.WEST);
+    	pText.add(textField, BorderLayout.CENTER);
+    	add(pText, BorderLayout.NORTH);
+    	/*
+    	 *设置JTextField的水平对齐方式
+    	 *此处为右对齐
+    	 **/
+    	textField.setHorizontalAlignment(JTextField.RIGHT);
+    	
+    	textField.addActionListener(new ActionListener() {
+    		/*
+    		 *JTextField在回车后会出发监听器
+    		 **/
+    		public void actionPerformed(ActionEvent e) {
+    			/*
+    			 *JTextField使用getText可以获取文本
+    			 *setText可以设置文本
+    			 **/
+    			messagePanel.setMessage(textField.getText());
+    			/*
+    			 *组件请求获取焦点
+    			 *使得在回车后光标仍然在文本输入框中
+    			 **/
+    			textField.requestFocusInWindow();
+    		}
+    	}
+    	);
+    }
+    
+    public static void main(String[] args) {
+    	JFrame frame = new JTextFieldDemo();
+    	frame.setSize(500, 300);
+    	frame.setTitle("JTextField Demo");
+    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	frame.setLocationRelativeTo(null);
+    	frame.setVisible(true);
+    }
+}
+
+class RadioButtonDemo extends JFrame {
 	/*
 	 *初始化的true或false是不触发ActionListener的
 	 **/
@@ -26,7 +72,7 @@ public class RadioButtonDemo extends JFrame {
 	private JButton jbLeft = new JButton("Left");
 	private JButton jbRight = new JButton("Right");
 	
-	private MessagePanel messagePanel = new MessagePanel("Welcome to Java");
+	protected MessagePanel messagePanel = new MessagePanel("Welcome to Java");
 
     public RadioButtonDemo() {
     	setLayout(new BorderLayout());
